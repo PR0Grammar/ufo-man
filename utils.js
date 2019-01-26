@@ -3,5 +3,5 @@ exports.removeSpaces = (str) => {
 }
 
 exports.isOnlyLetters = (str) => {
-    return /^[A-Za-z]+$/.test(str);
+    return typeof str === 'string' && /^[A-Za-z]+$/.test(str);
 }
