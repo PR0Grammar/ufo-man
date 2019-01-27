@@ -11,7 +11,7 @@ const wordList = fs.readFileSync('./words.txt', 'utf8').split('\n');
 
 while(true){
     let word = utils.getRandomElem(wordList);
-    let game = new UfoGame(word);
+    let game = new UfoGame(word, wordList);
 
     process.stdout.write('\nUFO: The GAME!\n');
     process.stdout.write('Instructions: save us from alien abduction by guessing letters in the codeword.\n');
@@ -20,7 +20,6 @@ while(true){
     while(game.hasGuessesLeft() && !game.haveWon()){
         const guess = rl.question('Please enter your guess: ');
         const result = game.guessLetter(guess);
-
         process.stdout.write(`\n${result}\n`);
         game.printState();
     }

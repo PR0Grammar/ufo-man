@@ -1,11 +1,18 @@
-const UFO_ART = require('./UFO_ART');
+const TrieNode = require('./TrieNode');
+const Queue = require('./Queue')
 const utils = require('./utils');
+const UFO_ART = require('./UFO_ART');
 
-function UfoGame(word){
+function UfoGame(word, wordList){
     if(!utils.isOnlyLetters(word))
         throw new Error(`Word must be a string with only letters from A-Z (No spaces).`);
+    if(!Array.isArray(wordList) && wordList !== undefined)
+        throw new Error(`Optional word list must be an array of words.`);
 
     Object.defineProperty(this, 'word', {value: word.toUpperCase()}); //Prevents overwriting/modification
+
+    this.dictionary = new TrieNode();
+    this.dictionary.insertMany(wordList || []);
     this.guessesLeft = 6;
     this.wrongGuesses = new Set();
     this.rightGuesses = new Set();
@@ -48,6 +55,36 @@ UfoGame.prototype.guessLetter = function(char) {
     return `Incorrect! The tractor beam pulls the person in further.`;
 }
 
+UfoGame.prototype.dictionaryMatches = function(){
+    let queue = new Queue();
+    let i = 0;
+    let matches = 0;
+    let currentWordState = utils.removeSpaces(this.wordGuessState);
+
+    queue.enqueue(this.dictionary.children);
+
+    while(i < currentWordState.length){
+        let nextCharQueue = new Queue();
+
+        while(!queue.isEmpty()){
+            let letters = queue.dequeue();
+
+            for(let char in letters){
+                if(char === currentWordState[i] || (currentWordState[i] === '_' && !this.wrongGuesses.has(char) && !this.rightGuesses.has(char))){
+                    if(i === currentWordState.length - 1 && letters[char].isWord)
+                        matches++;
+                    else
+                        nextCharQueue.enqueue(letters[char].children);
+                }
+            }
+        }
+        queue = nextCharQueue;
+        i++;
+    }
+
+    return matches;
+}
+
 UfoGame.prototype.ufoState = function() {
     let currState = this.hasGuessesLeft() ? 6 - this.guessesLeft : 6;
     return UFO_ART[currState];
@@ -71,6 +108,7 @@ UfoGame.prototype.printState = function() {
     process.stdout.write(`${Array.from(this.wrongGuesses).join(', ') || 'None'}\n`);
     process.stdout.write(`Codeword:\n`);
     process.stdout.write(`${this.wordGuessState}\n`);
+    process.stdout.write(`Number of possible codes from dictionary: ${this.dictionaryMatches()}\n`);
 }
 
 UfoGame.prototype.printWinningStatement = function(){
