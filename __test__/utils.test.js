@@ -48,3 +48,22 @@ test('removeSpaces(): Given " _ O _ E C _ D _ M _ "', (t) => {
     t.equals(utils.removeSpaces(' _ O _ E C _ D _ M _ '), '_O_EC_D_M_', 'Returns "_O_EC_D_M_"');
     t.end();
 });
+
+/**
+ * getRandomElem()
+ */
+
+test('getRandomElem(): Given undefined', (t) => {
+    t.equals(utils.getRandomElem(), null, 'Returns null');
+    t.end();
+});
+
+test('getRandomElem(): Given []', (t) => {
+    t.equals(utils.getRandomElem([]), undefined, 'Returns undefined');
+    t.end();
+});
+
+test('getRandomElem(): Given ["A"]', (t) => {
+    t.equals(utils.getRandomElem(['A']), 'A', 'Returns "A"');
+    t.end();
+});
