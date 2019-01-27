@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "tape": "^4.9.2"
+  },
+  "dependencies": {
+    "readline-sync": "^1.4.9"
   }
 }

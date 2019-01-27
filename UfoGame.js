@@ -5,19 +5,19 @@ function UfoGame(word){
     if(!utils.isOnlyLetters(word))
         throw new Error(`Word must be a string with only letters from A-Z (No spaces).`);
 
-    Object.defineProperty(this, '_word', {value: word.toUpperCase()}); //Prevents overwriting/modification
+    Object.defineProperty(this, 'word', {value: word.toUpperCase()}); //Prevents overwriting/modification
     this.guessesLeft = 6;
     this.wrongGuesses = new Set();
     this.rightGuesses = new Set();
-    this.wordGuessState = this.getWordGuessState();
+    this.wordGuessState = this.getWordGuessState();    
 }
 
 UfoGame.prototype.getWordGuessState = function() {
     let state = '';
 
-    for(let i = 0; i < this._word.length; i++){
-        if(this.rightGuesses.has(this._word[i]))
-            state += ` ${this._word[i]} `;
+    for(let i = 0; i < this.word.length; i++){
+        if(this.rightGuesses.has(this.word[i]))
+            state += ` ${this.word[i]} `;
         else
             state += ` _ `;
     }
@@ -37,7 +37,7 @@ UfoGame.prototype.guessLetter = function(char) {
     if(this.wrongGuesses.has(char) || this.rightGuesses.has(char))
         return `You can only guess that letter once, please try again.`;
 
-    if(this._word.includes(char)){
+    if(this.word.includes(char)){
         this.rightGuesses.add(char);
         this.wordGuessState = this.getWordGuessState();
         return `Correct! You're closer to cracking the codeword.`;
@@ -54,7 +54,7 @@ UfoGame.prototype.ufoState = function() {
 }
 
 UfoGame.prototype.haveWon = function() {
-    return utils.removeSpaces(this.wordGuessState) === this._word;    
+    return utils.removeSpaces(this.wordGuessState) === this.word;    
 }
 
 UfoGame.prototype.hasGuessesLeft = function(){
@@ -78,7 +78,7 @@ UfoGame.prototype.printWinningStatement = function(){
         process.stdout.write(`Oh No! The person has been abducted by the aliens. Better luck next time!\n`);
     else
         process.stdout.write(`You saved the person and earned a medal of honor!\n`);
-    process.stdout.write(`The codeword is: ${this._word}\n`);
+    process.stdout.write(`The codeword is: ${this.word}\n`);
     process.stdout.write(`Goodbye!\n`);
 }
 
