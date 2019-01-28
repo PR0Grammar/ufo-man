@@ -108,7 +108,7 @@ UfoGame.prototype.printState = function() {
     process.stdout.write(`${Array.from(this.wrongGuesses).join(', ') || 'None'}\n`);
     process.stdout.write(`Codeword:\n`);
     process.stdout.write(`${this.wordGuessState}\n`);
-    process.stdout.write(`Number of possible codes from dictionary: ${this.dictionaryMatches()}\n`);
+    process.stdout.write(`Number of possible codes from dictionary: ${this.dictionaryMatches() || 'N/A'}\n`);
 }
 
 UfoGame.prototype.printWinningStatement = function(){

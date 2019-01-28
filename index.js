@@ -20,6 +20,7 @@ while(true){
     while(game.hasGuessesLeft() && !game.haveWon()){
         const guess = rl.question('Please enter your guess: ');
         const result = game.guessLetter(guess);
+        process.stdout.write(`\n_____________________________________\n`);
         process.stdout.write(`\n${result}\n`);
         game.printState();
     }
@@ -33,10 +34,10 @@ while(true){
     
     process.stdout.write(`\nThe codeword was: ${game.word}\n`);
 
-    const playAgain = rl.keyInYN('Would you like to play again?');
+    const playAgain = rl.keyInYN('\nWould you like to play again?\n');
     
     if(!playAgain){
-        process.stdout.write('Thanks for playing! Goodbye.\n');
+        process.stdout.write('\nThanks for playing! Goodbye.\n');
         break;
     }
 }
