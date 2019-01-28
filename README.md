@@ -12,7 +12,7 @@
 
 ### Running tests
 
-To run the unit tests, run `node __test__/[nameOfFileToRun].js` in the parent directory
+To run the unit tests, run `node __test__/[nameOfFileToRun].js` in the project directory
 
 
 ### Dependencies
