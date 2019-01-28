@@ -23,6 +23,15 @@ test('constructor(): Given "codecademy"', (t) => {
     t.end();
 });
 
+test('constructor(): Given "codecademy", null', (t) => {
+    t.throws(() => {new UfoGame('codecademy', null)}, Error, 'Throws Error');
+    t.end();
+});
+
+test('constructor(): Given "codecademy", {}', (t) => {
+    t.throws(() => {new UfoGame('codecademy', {})}, Error, 'Throws Error');
+    t.end();
+});
 
 /**
  * getWordGuessState() 
@@ -192,6 +201,59 @@ test('guessLetter(): Given "B" when this.guessesLeft = 6, this.word = "VERYLONGW
     t.end();
 });
 
+/**
+ * dictionaryMatches()
+ */
+
+test('dictionaryMatches(): When this.word = "WORD", this.dictionary = ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"], this.wordGuessState = " _  _  _  _ "', (t) => {
+    let game = new UfoGame('WORD', ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"]);
+    game.wordGuessState = ' _  _  _  _ ';
+
+    t.equals(game.dictionaryMatches(), 3, 'Returns 3');
+    t.end();
+});
+
+test('dictionaryMatches(): When this.word = "WORD", this.dictionary = ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"], this.wordGuessState = " _  _  R  D "', (t) => {
+    let game = new UfoGame('WORD',["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"]);
+    game.wordGuessState = ' _  _  R  D ';
+
+    t.equals(game.dictionaryMatches(), 2, 'Returns 2');
+    t.end();
+});
+
+test('dictionaryMatches(): When this.word = "WORD", this.dictionary = [], this.wordGuessState = " _  _  R  D"', (t) => {
+    let game = new UfoGame('WORD', []);
+    game.wordGuessState = ' _  _  R  D ';
+
+    t.equals(game.dictionaryMatches(), 0, 'Returns 0');
+    t.end();
+});
+
+test('dictionaryMatches(): When this.word = "WORD", this.dictionary = ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"], this.wordGuessState = " _  _  _  _ ", this.wrongGuesses = ["E"]', (t) => {
+    let game = new UfoGame('WORD', ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"]);
+    game.wordGuessState = ' _  _  _  _ ';
+    game.wrongGuesses.add('E');
+
+    t.equals(game.dictionaryMatches(), 2, 'Returns 2');
+    t.end();
+});
+
+test('dictionaryMatches(): When this.word = "WORD", this.dictionary = ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"], this.wordGuessState = " W  _  _  _ "', (t) => {
+    let game = new UfoGame('WORD', ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"]);
+    game.wordGuessState = ' W  _  _  _ ';
+
+    t.equals(game.dictionaryMatches(), 1, 'Returns 1');
+    t.end();
+});
+
+test('dictionaryMatches(): When this.word = "SWAN", this.dictionary = ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"], this.wordGuessState = " _  W  _  _ ", this.rightGuesses = ["W"]', (t) => {
+    let game = new UfoGame('SWAN', ["WORD", "BIRD", "SNAKE", "GATE", "FAIRY"]);
+    game.wordGuessState = ' _  W  _  _ ';
+    game.rightGuesses.add('W');
+
+    t.equals(game.dictionaryMatches(), 0, 'Returns 0');
+    t.end();
+});
 
 /**
  * ufoState()
